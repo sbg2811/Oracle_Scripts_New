@@ -1,0 +1,44 @@
+--http://www.dba-oracle.com/menu_v$_views_list.htm
+-- oracle version
+select * from v$version; 
+
+--Check what all of the dynamic performance views
+SELECT
+   NAME,
+    TYPE
+FROM
+   V$FIXED_TABLE
+WHERE
+    NAME LIKE 'V$%'; 
+    
+--long running query (any bad nested loop query wont show here)
+select * from v$session_longops;
+
+--Slow running queries from v$sql however its cache after a point table data refreshes
+SELECT * FROM
+(SELECT
+    sql_fulltext,
+    sql_id,
+    elapsed_time,
+    child_number,
+    disk_reads,
+    executions,
+    first_load_time,
+    last_load_time
+FROM    v$sql
+ORDER BY elapsed_time DESC)
+WHERE ROWNUM < 10;
+
+SELECT * FROM table(DBMS_XPLAN.DISPLAY_CURSOR('&sql_id', &child));
+
+--query performing large no. of disks reads
+SELECT t2.username, t1.disk_reads, t1.executions,
+    t1.disk_reads / DECODE(t1.executions, 0, 1, t1.executions) as exec_ratio,
+    t1.command_type, t1.sql_text
+  FROM v$sqlarea t1, dba_users t2
+  WHERE t1.parsing_user_id = t2.user_id
+    AND t1.disk_reads > 100000
+  ORDER BY t1.disk_reads DESC;
+  
+  
+  

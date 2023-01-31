@@ -1,0 +1,19 @@
+--data cleansing - if any invalid data is to be found out then use below functions
+
+select * from V$VERSION;
+select cast('123.45' as number) from dual;
+select to_number('123.45') from dual;
+
+select cast('123.45$' as number) from dual; --error
+select to_number('123.45$') from dual;
+
+select to_number('123.45$'
+                  default 0 on conversion error) as num from dual;
+                  
+select cast('123.45$' as number
+            default 0 on conversion error) as num from dual;
+            
+select 
+validate_conversion('123.45' as number) as num1,
+validate_conversion('123.45$' as number) as num2
+from dual;

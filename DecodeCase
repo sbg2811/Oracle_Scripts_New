@@ -1,0 +1,57 @@
+/* decode case
+decode can be used as expression, only used in select query
+case is extended version of decode - case can have multiple logical conditions, equality, inequality etc
+*/
+create table student_rec
+(student_id number,
+student_name varchar2(20),
+stu_result varchar2(2)
+);
+
+insert all 
+into student_rec values (1,'John','P')
+into student_rec values (2,'Jack','P')
+into student_rec values (3,'Mike','F')
+into student_rec values (4,'Weston','F')
+into student_rec values (5,'Tai',null)
+select 1 from dual;
+commit;
+
+select student_id,student_name,stu_result,decode(stu_result,'P','PASS','F','FAIL','ResultNA') from student_rec;
+
+select * from STUDENT_REC;
+select student_id,
+      student_name,
+      stu_result,
+      case 
+          when stu_result = 'P' and marks >= 60 then 'PASS'
+          when stu_result = 'F' and marks <=60 then 'FAIL'
+          else 'ResultNA'
+      end
+from student_rec;
+
+select student_id,
+      student_name,
+      stu_result,
+      case stu_result
+          when   'P' then 'PASS'
+          when  'F' then 'FAIL'
+          else 'ResultNA'
+      end
+from student_rec;
+
+alter table student_rec 
+add column student_marks NUMBER; --this does not work, add through right clikc on table name and column add
+
+update student_rec
+set marks = 20 where STUDENT_ID = 4;
+commit;
+select student_id,
+      student_name,
+      stu_result,
+      case 
+          when stu_result='P' then 'PASS'
+          when stu_result='F' then 'FAIL'
+          when stu_result <> 'P' or stu_result <> 'F' then 'ResultNA'
+      end
+from student_rec;

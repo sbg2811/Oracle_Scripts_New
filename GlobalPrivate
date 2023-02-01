@@ -1,0 +1,20 @@
+-- How to access value of global and local variable having same name. Pkg spec variable is global, Pkg Body variable is local
+CREATE OR REPLACE 
+PACKAGE PKG_VAR AS 
+lv_var varchar2(10) := 'GLOBAL';
+procedure p_print;
+END PKG_VAR;
+
+create or replace package body PKG_VAR as
+procedure p_print as
+lv_var varchar2(10) := 'LOCAL';
+begin
+dbms_output.put_line('lv_var : '||lv_var); --access local variable
+dbms_output.put_line('lv_var : '||p_print.lv_var); --access global variable
+dbms_output.put_line('lv_var : '||PKG_VAR.lv_var); --access global variable
+end;
+END;
+/
+set SERVEROUTPUT on;
+exec PKG_VAR.p_print;
+---------------------------------------------------------------------------------------------

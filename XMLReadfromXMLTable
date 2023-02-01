@@ -1,0 +1,44 @@
+WITH t as (SELECT XMLTYPE('
+<RECSET>
+  <REC>
+    <COUNTRY>1</COUNTRY>
+    <POINT>1800</POINT>
+    <USER_INFO>
+      <USER_ID>1</USER_ID>
+      <TARGET>28</TARGET>
+      <STATE>6</STATE>
+      <TASK>12</TASK>
+    </USER_INFO>
+    <USER_INFO>
+      <USER_ID>5</USER_ID>
+      <TARGET>19</TARGET>
+      <STATE>1</STATE>
+      <TASK>90</TASK>
+    </USER_INFO>
+  </REC>
+  <REC>
+    <COUNTRY>2</COUNTRY>
+    <POINT>2400</POINT>
+    <USER_INFO>
+      <USER_ID>3</USER_ID>
+      <TARGET>14</TARGET>
+      <STATE>7</STATE>
+      <TASK>5</TASK>
+    </USER_INFO>
+  </REC>
+</RECSET>') as xml from dual)
+select x.country, x.point, y.user_id, y.target, y.state, y.task
+from t,XMLTABLE('/RECSET/REC'
+              PASSING t.xml
+              COLUMNS country NUMBER PATH '/REC/COUNTRY'
+                     ,point   NUMBER PATH '/REC/POINT'
+                     ,user_info XMLTYPE PATH '/REC/*'
+             ) x
+    ,XMLTABLE('/USER_INFO'
+              PASSING x.user_info
+              COLUMNS user_id NUMBER PATH '/USER_INFO/USER_ID'
+                     ,target  NUMBER PATH '/USER_INFO/TARGET'
+                     ,state   NUMBER PATH '/USER_INFO/STATE'
+                     ,task    NUMBER PATH '/USER_INFO/TASK'
+             ) y;
+

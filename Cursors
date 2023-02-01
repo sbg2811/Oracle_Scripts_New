@@ -107,3 +107,18 @@ open v_emp_ref_cursor for select * from emp;
 return v_emp_ref_cursor;
 --close v_emp_ref_cursor;
 end;
+
+/*
+--FOR UPDATE, WHERE CURRENT clause used during cursor defination
+declare
+cursor v_emp_cur is select * from emp where dept_no = 10 for update; 
+
+--dml operation during fetch, where current of clause can be defined
+declare cursor cursor_name
+open cursor cursor_name
+loop
+fetch
+cursor_name into v_out
+update table set variable_value = v_out where current of cursor_name
+end
+*/

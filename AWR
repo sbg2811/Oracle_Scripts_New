@@ -1,6 +1,8 @@
 --HOW TO RUN
 /RDBMS/ADMIN/AWRRPT.SQL
 
+https://www.oracle.com/technetwork/database/manageability/diag-pack-ow09-133950.pdf
+
 --SNAPSHOT TIMING
 EXEC DBMS_WORKLOAD_REPOSITORY.MODIFY_SNAPSHOT_SETTING(INTERVAL=>30);
 

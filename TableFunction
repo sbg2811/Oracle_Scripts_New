@@ -1,0 +1,23 @@
+UseCase- 
+Front End calls a PL/SQL function and expect to return Collection of empname from emp table. 
+how could a collection can be defined while creating a function
+
+select * from emp;
+
+set serveroutput on
+--Solution is create type as below
+create or replace type t_emp_name_list is table of varchar2(30);
+
+create or replace function f_emp_name return t_emp_name_list --type is defined before
+as
+v_emp_name_list t_emp_name_list := t_emp_name_list();
+begin
+for i in
+(select emp_name from employee) loop
+v_emp_name_list.extend(); --allocate memory
+v_emp_name_list(v_emp_name_list.last) := i.emp_name;
+end loop;
+return v_emp_name_list;
+end;
+
+select * from table(f_emp_name); --use table function to return table

@@ -1,0 +1,100 @@
+
+/*Autonomous Transaction
+Child Transaction invoked during Parent Transaction flow
+Commit/Rollback must be mentioned in chile transaction
+Child Transaction independant of Parent Trasaction
+Used mainly for Error Logging
+*/
+
+create table t
+(n number);
+
+insert into t values(1);
+
+declare
+pragma autonomous_transaction;
+begin
+insert into t values(2);
+commit;
+end;
+/
+
+insert into t values(3);
+rollback;
+
+select * from t; --it will have only record 2 even if rollback issued, autonomus transaction record not affected
+
+--Error Logging using Autonomus Transaction
+create table t_num
+(n number);
+
+create table err_log
+(errno number,
+errmsg varchar2(500));
+
+create or replace procedure p_err_log( 
+v_err_code number,
+v_err_msg varchar2)
+as 
+PRAGMA AUTONOMOUS_TRANSACTION;
+begin
+INSERT INTO err_log VALUES (
+v_err_code,
+v_err_msg
+);
+COMMIT; --THIS IS MUST
+end;
+/ 
+SET SERVEROUTPUT ON
+DECLARE 
+lv_err_code number;
+lv_err_msg varchar2(500);
+begin
+insert into t_num values(100);
+insert into t_num values(200);
+insert into t_num values(300);
+insert into t_num values('400$'); --errornous record
+insert into t_num values(100);
+
+commit;
+exception
+when others then
+lv_err_code := sqlcode;
+lv_err_msg := SQLERRM;
+p_err_log(lv_err_code,lv_err_msg);
+rollback;
+END;
+/
+
+select * from t_num;
+select * from err_log;
+
+--COMMIT Inside Trigger not possible, using Autonomus Transaction it can be acheived
+
+create table t_num_2 (n number);
+
+create or replace trigger trig_t_num_2
+before insert on t_num_2
+for each row
+begin
+commit;
+end;
+/
+
+insert into t_num_2 values (100); --error as commit can not be inside trigger
+
+--rewrite the trigger as below
+create or replace trigger trig_t_num_2
+before insert on t_num_2
+for each row
+declare
+pragma autonomous_transaction;
+begin
+commit;
+end;
+/
+
+insert into t_num_2 values (100); --error as commit can not be inside trigger
+select * from t_num_2;
+
+

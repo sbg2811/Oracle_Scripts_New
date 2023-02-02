@@ -1,0 +1,29 @@
+explain plan for select * from emp where emp_id = 101; 
+SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
+
+--Join Method 
+		HASH		
+		NESTED LOOP
+		SORT AND MERGE JOIN
+--Access Method 
+		Full Table Scan
+		Table Access by Row ID
+		Index Unique Scan
+		Index Range Scan
+		Index Skip Scan -- Index is composed for column1, column2, column3
+                                    empid empfirstname empsecondname
+                                    101   Harry        Sam
+                                    102   Harry        Sam
+                                    103   Harry        Sam
+                        select * from emp whre empid = 101;  --index is used
+                        select * from emp where empfirstname = 'Harry' 
+                        skip index happens (index is used but not all 3 values u need to give in where clause)
+		Full Index Scan
+		Fast Full Index Scan
+		Index Joins
+		Hash Access
+		Cluster Access
+		Bitmap Index
+    
+ --Data Operations
+		Filter/Sort/Aggregation

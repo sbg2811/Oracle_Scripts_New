@@ -1,0 +1,5 @@
+--Add 5 hour to current timestamp
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss'), to_char((sysdate + interval '5' hour), 'yyyy-mm-dd hh:mi:ss') Add5Min from dual;
+
+--Add 10 min to current timestamp
+select to_char(sysdate,'yyyy-mm-dd hh:mi:ss'), to_char((sysdate + interval '10' minute), 'yyyy-mm-dd hh:mi:ss') Add5Min from dual;

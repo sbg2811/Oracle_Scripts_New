@@ -1,0 +1,37 @@
+--Pattern based search mechanism
+--Use Case 
+----Web Scrapping (extract key information contact number (numeric), email id (@) etc)
+----text mining
+----HTML tags from html file
+
+---\d represents number 
+---Regex function
+/*
+Regexp_like
+Regexp_count
+regexp_instr
+regexp_replace
+regexp_substr
+*/
+
+
+create table text 
+(text varchar2(4000));
+
+insert into text values
+('World history or global history as a field of historical study examines history from a global perspective. 
+It emerged centuries ago; leading practitioners have included Voltaire (1694–1778), Hegel (1770–1831), Karl Marx (1818–1883), 
+Oswald Spengler (1880–1936), and Arnold J. Toynbee (1889–1975). 
+The field became much more active (in terms of university teaching, text books, scholarly journals, and academic associations) in the late 20th century. It is not to be confused with comparative history, which, like world history, deals with the history of multiple cultures and nations, but does not do so on a global scale. World history looks for common patterns that emerge across all cultures. World historians use a thematic approach, with two major focal points: integration (how processes of world history have drawn people of the world together) and difference (how patterns of world history reveal the diversity of the human experience)
+');
+
+commit;
+
+select * from text;
+
+select 
+--regexp_count(text,'\d\d\d\d') num_occurance,
+regexp_substr(text,'\d\d\d\d–\d\d\d\d',1,level) year_occur
+--,regexp_substr(text,'\d\d\d\d',2,level) toyear
+from text
+connect by level <= regexp_count(text,'\d\d\d\d–\d\d\d\d');

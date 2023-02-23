@@ -1,0 +1,51 @@
+
+SQL*Loader: Release 12.2.0.1.0 - Production on Sat Jul 25 09:28:26 2020
+
+Copyright (c) 1982, 2017, Oracle and/or its affiliates.  All rights reserved.
+
+Control File:   SEQLoadCSV_ControlFile.ctl
+Data File:      SEQLoadCSV_ControlFile.ctl
+  Bad File:     SEQLoadCSV_ControlFile.bad
+  Discard File:  none specified
+ 
+ (Allow all discards)
+
+Number to load: ALL
+Number to skip: 0
+Errors allowed: 50
+Bind array:     64 rows, maximum of 256000 bytes
+Continuation:    none specified
+Path used:      Conventional
+
+Table T_SEQLOAD, loaded from every logical record.
+Insert option in effect for this table: INSERT
+TRAILING NULLCOLS option in effect
+
+   Column Name                  Position   Len  Term Encl Datatype
+------------------------------ ---------- ----- ---- ---- ---------------------
+DATA1                               FIRST     *   ,       CHARACTER            
+DATA2                                NEXT     *   ,       CHARACTER            
+SEQ_NUMBER                           NEXT     *   ,       CHARACTER            
+    SQL string for column : "s_seqload.nextval"
+
+
+Table T_SEQLOAD:
+  2 Rows successfully loaded.
+  0 Rows not loaded due to data errors.
+  0 Rows not loaded because all WHEN clauses were failed.
+  0 Rows not loaded because all fields were null.
+
+
+Space allocated for bind array:                  49536 bytes(64 rows)
+Read   buffer bytes: 1048576
+
+Total logical records skipped:          0
+Total logical records read:             2
+Total logical records rejected:         0
+Total logical records discarded:        0
+
+Run began on Sat Jul 25 09:28:26 2020
+Run ended on Sat Jul 25 09:28:32 2020
+
+Elapsed time was:     00:00:06.37
+CPU time was:         00:00:00.28

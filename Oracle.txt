@@ -1,0 +1,12 @@
+shah3879
+
+imtiaz@jobreadyprogrammer.com
+SQl Structured Query Language - Instrcution to Database (Database independant language)
+Queries - question to database
+Database is collection of objects
+Oracle is software 
+APEX - website/tool helps to access oracle database on cloud
+
+SQL command is statement consist of keyword like select, insert etc
+
+
